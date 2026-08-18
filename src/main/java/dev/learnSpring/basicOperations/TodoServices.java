@@ -5,6 +5,8 @@ import dev.learnSpring.basicOperations.Entities.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TodoServices {
 
@@ -19,6 +21,18 @@ public class TodoServices {
     public Todo getTodoById(Long id){
         return todoRepository.getReferenceById(id);
     }
+
+    public List<Todo> getAllTodos(){
+        return todoRepository.findAll();
+    }
+
+    public Todo deleteTodoById(Long id){
+        Todo data = todoRepository.getReferenceById(id);
+        todoRepository.delete(data);
+        return data;
+    }
+
+
 
 
 }
