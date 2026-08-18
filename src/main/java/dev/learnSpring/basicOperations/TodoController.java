@@ -28,6 +28,10 @@ public class TodoController {
         
         Todo data = todoServices.getTodoById(id);
 
+        if(data == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -39,7 +43,35 @@ public class TodoController {
 
     @DeleteMapping("/{id}")
     ResponseEntity<Todo> deleteTodoById(@PathVariable Long id){
-        return new ResponseEntity<>(todoServices.deleteTodoById(id), HttpStatus.OK);
+        Todo data = todoServices.deleteTodoById(id);
+        if(data == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+    }
+
+
+    @PutMapping("/{id}")
+    ResponseEntity<Todo> updateTodo(@PathVariable Long id , @RequestBody Todo todo){
+
+       Todo data = todoServices.updateTodo(id,todo);
+       if(data == null){
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+       return new ResponseEntity<>(data, HttpStatus.OK);
+
+    }
+
+
+    @PatchMapping("/{id}")
+    ResponseEntity<Todo> patchTodo(@PathVariable Long id , @RequestBody Todo data){
+
+        Todo entry = todoServices.patchTodo(id,data);
+        if(entry == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(entry, HttpStatus.OK);
     }
 
 
