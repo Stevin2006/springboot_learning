@@ -1,4 +1,4 @@
-package dev.learnSpring.basicOperations;
+package dev.learnSpring.basicOperations.Repositories;
 
 import dev.learnSpring.basicOperations.Entities.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;

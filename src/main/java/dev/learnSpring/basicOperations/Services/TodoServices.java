@@ -1,8 +1,13 @@
-package dev.learnSpring.basicOperations;
+package dev.learnSpring.basicOperations.Services;
 
 
 import dev.learnSpring.basicOperations.Entities.Todo;
+import dev.learnSpring.basicOperations.Handlers.TodoHandlers.TodoNotFoundException;
+import dev.learnSpring.basicOperations.Repositories.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +24,7 @@ public class TodoServices {
     }
 
     public Todo getTodoById(Long id){
-        return todoRepository.findById(id).orElse(null);
+        return todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException("Todo with id " + id + " not found"));
     }
 
     public List<Todo> getAllTodos(){
@@ -27,10 +32,7 @@ public class TodoServices {
     }
 
     public Todo deleteTodoById(Long id){
-        Todo data = todoRepository.findById(id).orElse(null);
-        if(data == null){
-            return null;
-        }
+        Todo data = todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException("Todo with id " + id + " not found"));
         todoRepository.delete(data);
         return data;
     }
@@ -39,10 +41,8 @@ public class TodoServices {
 
     public Todo updateTodo(Long id ,Todo data){
 
-        Todo oData = todoRepository.findById(id).orElse(null);
-        if(oData == null){
-            return null;
-        }
+        Todo oData = todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException("Todo with id " + id + " not found"));
+
         oData.setTitle(data.getTitle());
         oData.setDescription(data.getDescription());
         oData.setStatus(data.getStatus());
@@ -50,11 +50,7 @@ public class TodoServices {
     }
 
     public Todo patchTodo(Long id , Todo data){
-        Todo oData = todoRepository.findById(id).orElse(null);
-        if(oData == null){
-            return null;
-        }
-
+        Todo oData = todoRepository.findById(id).orElseThrow(() -> new TodoNotFoundException("Todo with id " + id + " not found"));
         if(data.getTitle() != null){
             oData.setTitle(data.getTitle());
         }if(data.getDescription() != null){
@@ -64,6 +60,11 @@ public class TodoServices {
         }
 
         return todoRepository.save(oData);
+    }
+
+    public Page<Todo> getAllTodos(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return todoRepository.findAll(pageable);
     }
 
 

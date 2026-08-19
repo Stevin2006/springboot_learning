@@ -3,7 +3,10 @@ package dev.learnSpring.basicOperations.Entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jdk.jfr.DataAmount;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 
 @Entity
 public class Todo {
@@ -11,8 +14,15 @@ public class Todo {
     @GeneratedValue
     Long id;
 
+    @NotNull
+    @NotBlank
     String title;
+
+    @NotNull
+    @NotBlank
     String description;
+
+
     String status;
 
 
